@@ -23,8 +23,10 @@ public class Bomb : Object
         if(_identifier == "E")
         {
             _gridManager.DestroyObjectAt(_posX, _posY);
+            return; //QUESTO RETURN +E FONDAMENTALE, QUANDO +E IN QUESTO STATO VOGLIO ELIMINARLO NON FACENDOLO FARE NULLA
         }
         if (damage == 0) return;
+
         //danneggia le caselle adiacenti usando _gridObjects
         _durability -= damage;
         
@@ -40,7 +42,6 @@ public class Bomb : Object
 
                 if (x < 0 || x >= _gridManager.Width() || y < 0 || y >= _gridManager.Height())
                 {
-                    //Debug.LogError("index out of bound");
                     continue;
                 }
 

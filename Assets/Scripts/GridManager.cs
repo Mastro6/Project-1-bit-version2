@@ -26,19 +26,9 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _gridObjects = new Object[_width, _height];
-        _gridDamages = new int[_width, _height];
 
-        PopulateGridObject(new Bomb(1, 0, 3, this));
-        PopulateGridObject(new Bomb(2, 0, 3, this));
-        PopulateGridObject(new Bomb(2, 1, 3, this));
-        PopulateGridObject(new Bomb(2, 2, 3, this));
-        //PopulateGridObject(new Bomb(1, 2, 3, this));
-        //PopulateGridObject(new Rock(2, 3, 10, this));
-        DamageCell(1, 0, 2);
-
-
-
+        LoadLevel();
+        
     }
 
     // Update is called once per frame
@@ -60,6 +50,23 @@ public class GridManager : MonoBehaviour
         {
             print("input key D detected");
             PrintGridDamages();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            print("input key R detected");
+            ResetGridDamage();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            print("input key P detected");
+            List<string> listaStringa = DivideString("S1B3B3");
+            foreach(string s in listaStringa)
+            {
+                Debug.Log(s);
+            }
+
         }
     }
 
@@ -85,13 +92,10 @@ public class GridManager : MonoBehaviour
                 else
                 {
                     str +="["+ _gridObjects[j, i].Visualize()+"] ";
-                    
                 }
-
             }
             Debug.Log(str);
         }
-
 
         Debug.Log("---------------------------");
     }
@@ -119,7 +123,7 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public void ObjectsGetDamages()
     {
-        Debug.Log("ObjectsGetDamages() called");
+
         int[,] _gridDamagesCopia = CopyGridDamage();
 
         ResetGridDamage();
@@ -156,11 +160,11 @@ public class GridManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Set every integers of the grid to zero
+    /// Set every integers of the damage grid to zero
     /// </summary>
     private void ResetGridDamage()
     {
-        Debug.Log("griglia resettata");
+        
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
@@ -168,6 +172,7 @@ public class GridManager : MonoBehaviour
                 _gridDamages[i, j] = 0;
             }
         }
+
     }
 
     /// <summary>
@@ -186,11 +191,9 @@ public class GridManager : MonoBehaviour
                 int damage = _gridDamages[j, i];
 
                 str += "[" + damage.ToString()+ "]";
-
             }
             Debug.Log(str);
         }
-
 
         Debug.Log("---------------------------");
     }
@@ -212,5 +215,83 @@ public class GridManager : MonoBehaviour
         _gridObjects[x, y] = null;
     }
 
+    private void LoadLevel()
+    {
 
+        string str = "3/4/S1B3B3/S1R10B3/S2B3/S3";
+
+        string[] listStr = str.Split('/');
+        int lenList = listStr.Length;
+        _width = int.Parse(listStr[0]);
+        _height = int.Parse(listStr[1]);
+
+        _gridObjects = new Object[_width, _height];
+        _gridDamages = new int[_width, _height];
+
+        
+
+        for (int i = 0; i < _width; i++)
+        {
+            int freeCells = 0;
+            for (int j = 0; j < _height; j++)
+            {
+                if (freeCells > 0)
+                {
+                    freeCells--;
+                    continue;
+                }
+            }
+        }
+
+
+        PopulateGridObject(new Bomb(1, 0, 3, this));
+        PopulateGridObject(new Bomb(2, 0, 3, this));
+        PopulateGridObject(new Bomb(2, 1, 3, this));
+        PopulateGridObject(new Bomb(2, 2, 3, this));
+        PopulateGridObject(new Rock(1, 1, 10, this));
+
+        DamageCell(1, 0, 2);
+    }
+
+    private List<string> DivideString(string str)
+    {
+
+        List<char> listChar = StringToListChar(str);
+
+        List<string> sol = new List<string>();
+
+        int len = str.Length;
+        int index = 0;
+
+        int deapth = 100;
+        while (index < len && deapth > 0)
+        {
+            deapth--;
+            char lettera = listChar[index];
+            index++;
+            int beginindex = index;
+            while(listChar[index] >= '0' && listChar[index] <= '9' && deapth > 0)
+            {
+                deapth--;
+                index++;
+            }
+
+            string num = str.Substring(beginindex, index - beginindex);
+
+            index++;
+            sol.Add(lettera + num);
+        }
+
+        return sol;
+    }
+
+    private List<char> StringToListChar(string str)
+    {
+        List<char> sol = new List<char>();
+        for (int i = 0; i < str.Length; i++)
+        {
+            sol.Add(str[i]);
+        }
+        return sol;
+    }
 }

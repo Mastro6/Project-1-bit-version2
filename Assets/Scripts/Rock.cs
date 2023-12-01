@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Rock : Object
 { 
-    private int _durability;
+
+
     private GridManager _gridManager;
     private string _identifier;
 
@@ -12,7 +13,7 @@ public class Rock : Object
     {
         _posX = x;
         _posY = y;
-        _durability = durability;
+        this.durability = durability;
         _gridManager = gridManager;
         _identifier = "R"; //rock
     }
@@ -22,8 +23,8 @@ public class Rock : Object
         if (damage == 0) return;
 
         //danneggia le caselle adiacenti usando _gridObjects
-        _durability -= damage;
-        if (_durability <= 0)
+        durability -= damage;
+        if (durability <= 0)
         {
             _identifier = "D"; //debris
         }
@@ -33,7 +34,7 @@ public class Rock : Object
     {
         string str = "";
         str += _identifier;
-        str += _durability.ToString();
+        str += durability.ToString();
         return str;
     }
 }

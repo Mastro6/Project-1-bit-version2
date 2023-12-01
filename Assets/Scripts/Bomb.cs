@@ -5,7 +5,6 @@ using UnityEngine;
 public class Bomb : Object
 {
 
-    private int _durability;
     private GridManager _gridManager;
     private string _identifier;
     public Bomb(int x, int y, int durability, GridManager gridManager)
@@ -13,7 +12,7 @@ public class Bomb : Object
 
         _posX = x;
         _posY = y;
-        _durability = durability;
+        this.durability = durability;
         _gridManager = gridManager;
         _identifier = "B"; //bomb
     }
@@ -28,7 +27,7 @@ public class Bomb : Object
         if (damage == 0) return;
 
         //danneggia le caselle adiacenti usando _gridObjects
-        _durability -= damage;
+        durability -= damage;
         
         _identifier = "E"; //explosion
         
@@ -58,7 +57,7 @@ public class Bomb : Object
     {
         string str = "";
         str += _identifier;
-        str += _durability.ToString();
+        str += durability.ToString();
 
         return str;
     }

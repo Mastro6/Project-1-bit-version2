@@ -8,6 +8,7 @@ public abstract class Object
     protected int _posX;
     protected int _posY;
 
+    protected int durability;
 
     public abstract void ReceiveDamage(int damage);
     public abstract string Visualize();
@@ -21,4 +22,11 @@ public abstract class Object
     {
         return _posY;
     }
+
+    public int Durability()
+    {
+        return durability;
+    }
+
+
 }
